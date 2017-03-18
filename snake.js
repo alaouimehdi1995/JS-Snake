@@ -47,6 +47,7 @@ function cleanScreen(){
     var oldDiv=document.getElementById('snake');
     var newDiv=document.createElement('div');
     newDiv.id="snake";
+    newDiv.className="snake";
     document.body.replaceChild(newDiv,oldDiv);
 
 
@@ -110,12 +111,15 @@ function checkGameOver(toCheck){
     }
     return false;
 }
+/*
+* Important: we should recalculate div width and height in order to be a multiple of blocSize
+* */
 
 var blocSize=20;
 var leftLimit=0;
-var rightLimit=parseInt(windowWidth/blocSize);
+var rightLimit=parseInt((windowWidth-parseFloat(getComputedStyle(document.getElementById('snake'),null).width))/blocSize);
 var topLimit=0;
-var downLimit=parseInt(windowHeight/blocSize);
+var downLimit=parseInt((windowHeight-parseFloat(getComputedStyle(document.getElementById('snake'),null).height))/blocSize);
 var snake=[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}];
 var direction="R";
 var meal=getRandomBloc();

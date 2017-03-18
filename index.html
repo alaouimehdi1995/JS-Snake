@@ -9,7 +9,6 @@
     .bloc {
         position: absolute;
         width: 20px; height: 20px;
-
         top:0px;left:0px;
         text-align: center;
         font-size: 40px;
@@ -17,9 +16,21 @@
         color: #CCC;
         cursor: move;
     }
+    .snake{
+        border: double;
+        width:50%;
+        height: 50%;
+        position: absolute;
+        top: 25%;
+        left:25%;
+        display: block;
+        border-width: 3px;
+        background-color: greenyellow;
+    }
 </style>
+<div style="text-align: center;"><h2>Snake Game</h2>By ALAOUI Mehdi</div>
+<div id="snake" class="snake"></div>
 
-<div id="snake"></div>
 
 <script type="text/javascript" src="snake.js"></script>
 </body>
