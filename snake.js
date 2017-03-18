@@ -92,12 +92,23 @@ function play() {
     snake.unshift(head);
     cleanScreen();
     draw(snake);
+    if(checkGameOver(snake)){
+        alert("Game Over");
+    }
     if(snake[0].x==meal[0].x && snake[0].y==meal[0].y){
         snake.unshift(meal[0]);
         meal=getRandomBloc();
     }
     draw(meal);
 
+}
+function checkGameOver(toCheck){
+    for(i=1;i<toCheck.length;i++){
+        if(toCheck[i].x==toCheck[0].x && toCheck[i].y==toCheck[0].y){
+            return true;
+        }
+    }
+    return false;
 }
 
 var blocSize=20;
