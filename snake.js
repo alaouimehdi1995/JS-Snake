@@ -51,6 +51,15 @@ function cleanScreen(){
 
 
 }
+function randomIntFromInterval(min,max) {
+    return (Math.random()*(max-min)+min);
+}
+
+function getRandomBloc(){
+    var px=parseInt(randomIntFromInterval(leftLimit,rightLimit));
+    var py=parseInt(randomIntFromInterval(topLimit,downLimit));
+    return [{x:px,y:py}];
+}
 
 function play() {
     var head;
@@ -79,24 +88,28 @@ function play() {
         else
             head = {x: snake[0].x, y: topLimit};
     }
-
     snake.pop();
     snake.unshift(head);
     cleanScreen();
     draw(snake);
+    if(snake[0].x==meal[0].x && snake[0].y==meal[0].y){
+        meal=getRandomBloc();
+    }
+    draw(meal);
 
 }
 
 var blocSize=20;
 var leftLimit=0;
-var rightLimit=windowWidth/blocSize;
+var rightLimit=parseInt(windowWidth/blocSize);
 var topLimit=0;
-var downLimit=windowHeight/blocSize;
+var downLimit=parseInt(windowHeight/blocSize);
 var snake=[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}];
 var direction="R";
-draw(snake);
+//draw(snake);
+var meal=getRandomBloc();
 listenKeyboard();
 
 var kda=play;
-setInterval(kda, 200);
+setInterval(kda, 70);
 
