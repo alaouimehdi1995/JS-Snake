@@ -93,6 +93,7 @@ function play() {
     cleanScreen();
     draw(snake);
     if(snake[0].x==meal[0].x && snake[0].y==meal[0].y){
+        snake.unshift(meal[0]);
         meal=getRandomBloc();
     }
     draw(meal);
@@ -106,7 +107,6 @@ var topLimit=0;
 var downLimit=parseInt(windowHeight/blocSize);
 var snake=[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}];
 var direction="R";
-//draw(snake);
 var meal=getRandomBloc();
 listenKeyboard();
 
