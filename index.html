@@ -1,38 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Snake</title>
-</head>
-<body>
-<style type="text/css">
-    .bloc {
-        position: absolute;
-        width: 20px; height: 20px;
-        top:0px;left:0px;
-        text-align: center;
-        font-size: 40px;
-        background-color: #222;
-        color: #CCC;
-        cursor: move;
-    }
-    .snake{
-        border: double;
-        width:50%;
-        height: 50%;
-        position: absolute;
-        top: 25%;
-        left:25%;
-        display: block;
-        border-width: 3px;
-        background-color: greenyellow;
-    }
-</style>
-<div style="text-align: center;"><h2>Snake Game</h2>By ALAOUI Mehdi</div>
-<h3 id="score" style="margin-left: auto;margin-right: auto;text-align: center;"></h3>
-<div id="snake" class="snake" style=""></div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Snake</title>
+    </head>
+        <link href="assets/css/main.css" rel="stylesheet">
+    <body>
+        <div style="text-align: center;">
+            <h2>Snake Game</h2>
+            By ALAOUI Mehdi
+        </div>
+        <h3 id="score" style="margin-left: auto;margin-right: auto;text-align: center;"></h3>
+        <div id="snake" class="snake" style=""></div>
 
-
-<script type="text/javascript" src="snake.js"></script>
-</body>
+        <script type="text/javascript" src="assets/js/snake.js"></script>
+    </body>
 </html>

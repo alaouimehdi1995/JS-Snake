@@ -1,0 +1,21 @@
+.bloc {
+    position: absolute;
+    width: 20px; height: 20px;
+    top:0px;left:0px;
+    text-align: center;
+    font-size: 40px;
+    background-color: #222;
+    color: #CCC;
+    cursor: move;
+}
+.snake{
+    border: double;
+    width:50%;
+    height: 50%;
+    position: absolute;
+    top: 25%;
+    left:25%;
+    display: block;
+    border-width: 3px;
+    background-color: greenyellow;
+}
