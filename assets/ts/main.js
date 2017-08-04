@@ -7,7 +7,6 @@ var gameControl_1 = require("./gameControl");
 var element = document.getElementById('snake');
 var scoreElement = document.getElementById('score');
 var game = new game_1.Game(element, scoreElement);
-var gameController;
-gameController = new gameControl_1.KeyboardController(game.snake);
+var gameController = new gameControl_1.KeyboardController(game.snake);
 setInterval(function () { game.start(); }, 80);
 //# sourceMappingURL=main.js.map

@@ -1,4 +1,6 @@
-import {Game} from "./game";
+import {Game, Snake} from "./game";
+
+import {Screen} from "./screen";
 import {GameController, KeyboardController} from "./gameControl";
 
 /**
@@ -7,9 +9,20 @@ import {GameController, KeyboardController} from "./gameControl";
 
 var element=document.getElementById('snake');
 var scoreElement=document.getElementById('score');
-var game=new Game(element,scoreElement);
-var gameController:GameController;
 
-gameController=new KeyboardController(game.snake);
+var game=new Game(element,scoreElement);
+
+var gameController:GameController=new KeyboardController(game.snake);
+
+
+
+
+
+
+
+
+
+
+
 
 setInterval(function(){game.start()}, 80);

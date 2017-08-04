@@ -2,6 +2,12 @@
  * Created by mehdi on 04/08/17.
  */
 "use strict";
+var Border = (function () {
+    function Border() {
+    }
+    return Border;
+}());
+exports.Border = Border;
 var Screen = (function () {
     function Screen(element, scoreElement, blocSize) {
         this.element = element;
@@ -10,6 +16,7 @@ var Screen = (function () {
             this.blocSize = blocSize;
         else
             this.blocSize = 20;
+        this.border = new Border();
         this.border.left = 0;
         this.border.right = 0;
         this.border.top = 0;

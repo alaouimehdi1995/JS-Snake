@@ -14,8 +14,10 @@ var Coordonates = (function () {
     }
     return Coordonates;
 }());
+exports.Coordonates = Coordonates;
 var Snake = (function () {
     function Snake(screen, initialPosition) {
+        this.body = [];
         this.screen = screen;
         this.direction = Direction.right;
         for (var i = 0; i < initialPosition.length; i++) {
@@ -40,7 +42,7 @@ var Snake = (function () {
         this.body.unshift(head);
     };
     Snake.prototype.eatFood = function (food) {
-        this.body.unshift(food.position);
+        this.body.unshift(new Coordonates(food.position.x, food.position.y));
     };
     Snake.prototype.checkGameOver = function () {
         for (var i = 1; i < this.body.length; i++) {
@@ -56,6 +58,7 @@ exports.Snake = Snake;
 var Food = (function () {
     function Food(screen) {
         this.screen = screen;
+        this.position = new Coordonates(null, null);
     }
     Food.prototype.randomIntFromInterval = function (min, max) {
         return (Math.random() * (max - min) + min);
@@ -78,6 +81,7 @@ var Food = (function () {
     };
     return Food;
 }());
+exports.Food = Food;
 var Game = (function () {
     function Game(element, scoreElement) {
         this.score = 0;
@@ -86,6 +90,15 @@ var Game = (function () {
         this.food = new Food(this.screen);
         this.food.getRandomBloc();
     }
+    Game.prototype.setScreen = function (screen) {
+        this.screen = screen;
+    };
+    Game.prototype.setSnake = function (snake) {
+        this.snake = snake;
+    };
+    Game.prototype.setFood = function (food) {
+        this.food = food;
+    };
     Game.prototype.start = function () {
         var head;
         if (this.snake.direction == Direction.right) {

@@ -6,7 +6,7 @@ export enum Direction{
     up,
     down
 }
-class Coordonates{
+ export class Coordonates{
     x:number;
     y:number;
     constructor(x:number,y:number){
@@ -15,13 +15,13 @@ class Coordonates{
     }
 }
 
-export class Snake{
+ export class Snake{
     body:Coordonates[];
     direction:Direction;
     screen:Screen;
 
     constructor(screen:Screen,initialPosition){
-
+        this.body=[];
         this.screen=screen;
         this.direction=Direction.right;
         for(let i=0;i<initialPosition.length;i++){
@@ -47,7 +47,7 @@ export class Snake{
         this.body.unshift(head);
     }
     eatFood(food){
-        this.body.unshift(food.position);
+        this.body.unshift(new Coordonates(food.position.x,food.position.y));
     }
 
     checkGameOver():boolean{
@@ -60,11 +60,12 @@ export class Snake{
     }
 }
 
-class Food{
+ export class Food{
     position:Coordonates;
     screen:Screen;
     constructor(screen:Screen){
         this.screen=screen;
+        this.position=new Coordonates(null,null);
     }
 
     randomIntFromInterval (min:number,max:number) {
@@ -90,7 +91,7 @@ class Food{
 }
 
 
-export class Game{
+ export class Game{
     score:number;
     screen:Screen;
     snake:Snake;
@@ -101,6 +102,15 @@ export class Game{
         this.snake=new Snake(this.screen,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]);
         this.food=new Food(this.screen);
         this.food.getRandomBloc();
+    }
+    setScreen(screen:Screen){
+        this.screen=screen;
+    }
+    setSnake(snake:Snake){
+        this.snake=snake;
+    }
+    setFood(food:Food){
+        this.food=food;
     }
 
     start(){

@@ -2,14 +2,14 @@
  * Created by mehdi on 04/08/17.
  */
 
-interface Border{
+ export class Border{
     left:number;
     right:number;
     top:number;
     down:number;
 }
 
-export class Screen{
+ export class Screen{
 
     blocSize:number;
     border:Border;
@@ -25,7 +25,7 @@ export class Screen{
             this.blocSize=blocSize;
         else
             this.blocSize=20;
-
+        this.border=new Border();
         this.border.left=0;
         this.border.right=0;
         this.border.top=0;
