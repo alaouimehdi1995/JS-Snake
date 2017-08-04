@@ -20,8 +20,8 @@ var screen={
 
     adaptToScreen:function (){
 
-        this.adaptedWidth=parseInt(parseFloat(getComputedStyle(document.getElementById('snake'),null).width)/this.blocSize)*this.blocSize+"px";
-        this.adaptedHeight=parseInt(parseFloat(getComputedStyle(document.getElementById('snake'),null).height)/this.blocSize)*this.blocSize+"px";
+        this.adaptedWidth=parseInt(parseFloat(getComputedStyle(element,null).width)/this.blocSize)*this.blocSize+"px";
+        this.adaptedHeight=parseInt(parseFloat(getComputedStyle(element,null).height)/this.blocSize)*this.blocSize+"px";
         this.leftBorder=0;
         this.topBorder=0;
         this.rightBorder=parseFloat(this.adaptedWidth)/this.blocSize;
@@ -61,7 +61,7 @@ var game={
             Div.style.top=y;
             Div.style.left=x;
             Div.innerHTML=' ';
-            document.getElementById('snake').appendChild(Div);
+            element.appendChild(Div);
         }
     },
 
@@ -75,12 +75,12 @@ var game={
             Div.style.top=y;
             Div.style.left=x;
             Div.innerHTML=' ';
-            document.getElementById('snake').appendChild(Div);
+            element.appendChild(Div);
         }
     },
 
     cleanScreen:function (){
-        var oldDiv=document.getElementById('snake');
+        var oldDiv=element;
         var parent=oldDiv.parentNode;
         var newDiv=document.createElement('div');
         newDiv.id="snake";
@@ -88,6 +88,7 @@ var game={
         newDiv.style.height=screen.adaptedHeight;
         newDiv.className="snake";
         parent.replaceChild(newDiv,oldDiv);
+        element=newDiv;
     
     },
 
@@ -182,10 +183,10 @@ function listenKeyboard(){
 * Important: we should recalculate div width and height in order to be a multiple of blocSize
 * */
 
-
+var element=document.getElementById('snake');
 screen.adaptToScreen();
 listenKeyboard();
 game.meal.getRandomBloc();
-document.getElementById('snake').style.width=screen.adaptedWidth;
-document.getElementById('snake').style.height=screen.adaptedHeight;
+element.style.width=screen.adaptedWidth;
+element.style.height=screen.adaptedHeight;
 setInterval(function(){game.play()}, 80);
