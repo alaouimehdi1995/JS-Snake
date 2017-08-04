@@ -6,16 +6,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/game.js" afterPath="$PROJECT_DIR$/assets/ts/game.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/game.js.map" afterPath="$PROJECT_DIR$/assets/ts/game.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/game.ts" afterPath="$PROJECT_DIR$/assets/ts/game.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/gameControl.js" afterPath="$PROJECT_DIR$/assets/ts/gameControl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/gameControl.js.map" afterPath="$PROJECT_DIR$/assets/ts/gameControl.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/gameControl.ts" afterPath="$PROJECT_DIR$/assets/ts/gameControl.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/main.js" afterPath="$PROJECT_DIR$/assets/ts/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/main.js.map" afterPath="$PROJECT_DIR$/assets/ts/main.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/main.ts" afterPath="$PROJECT_DIR$/assets/ts/main.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/screen.js" afterPath="$PROJECT_DIR$/assets/ts/screen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/screen.js.map" afterPath="$PROJECT_DIR$/assets/ts/screen.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/screen.ts" afterPath="$PROJECT_DIR$/assets/ts/screen.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ts/snake.js" afterPath="$PROJECT_DIR$/assets/ts/snake.js" />
     </list>
     <ignored path="JS-Snake.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,22 +42,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gameControl.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/ts/gameControl.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="game.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/ts/game.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="49" column="74" selection-start-line="49" selection-start-column="74" selection-end-line="49" selection-end-column="74" />
-              <folding />
+            <state relative-caret-position="45">
+              <caret line="156" column="31" selection-start-line="156" selection-start-column="31" selection-end-line="156" selection-end-column="31" />
+              <folding>
+                <element signature="e#3247#3517#0" expanded="false" />
+                <element signature="e#3576#3848#0" expanded="false" />
+                <element signature="e#3905#4174#0" expanded="false" />
+                <element signature="e#4233#4504#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -71,8 +60,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+            <state relative-caret-position="132">
+              <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h3#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -84,8 +73,8 @@
       <file leaf-file-name="main.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/ts/main.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="225">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
                 <element signature="e#137#177#0" expanded="false" />
@@ -116,12 +105,12 @@
         <option value="$PROJECT_DIR$/assets/js/game.ts" />
         <option value="$PROJECT_DIR$/assets/js/main.js" />
         <option value="$PROJECT_DIR$/assets/ts/main.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/assets/ts/screen.ts" />
         <option value="$PROJECT_DIR$/assets/js/snake.js" />
-        <option value="$PROJECT_DIR$/assets/ts/main.ts" />
         <option value="$PROJECT_DIR$/assets/ts/gameControl.ts" />
+        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/assets/ts/game.ts" />
+        <option value="$PROJECT_DIR$/assets/ts/main.ts" />
       </list>
     </option>
   </component>
@@ -377,12 +366,12 @@
       <updated>1490521768500</updated>
       <workItem from="1490521769927" duration="7870000" />
       <workItem from="1490576024616" duration="136000" />
-      <workItem from="1501844117518" duration="10211000" />
+      <workItem from="1501844117518" duration="12466000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18217000" />
+    <option name="totallyTimeSpent" value="20472000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1920" height="971" extended-state="6" />
@@ -460,16 +449,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/ts/snake.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1863">
-          <caret line="69" column="361" selection-start-line="69" selection-start-column="359" selection-end-line="69" selection-end-column="361" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/ts/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -502,20 +481,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/ts/main.ts">
+    <entry file="file://$PROJECT_DIR$/assets/ts/snake.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#137#177#0" expanded="false" />
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/ts/snake.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="119" column="28" selection-start-line="119" selection-start-column="28" selection-end-line="119" selection-end-column="28" />
+          <folding>
+            <marker date="1501857447708" expanded="true" signature="2468:5657" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="2852:2958" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="2885:2932" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="3023:4426" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="3069:3330" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="3370:3889" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="3441:3883" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="3934:3999" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="4047:4132" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="4182:4405" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="4235:4377" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="4478:5525" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="4506:4596" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="4768:5061" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="5101:5505" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="5575:5657" ph="{...}" />
+            <marker date="1501857447708" expanded="true" signature="5618:5657" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/ts/gameControl.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
+        <state relative-caret-position="144">
           <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
           <folding />
         </state>
@@ -531,16 +535,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/ts/game.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="49" column="74" selection-start-line="49" selection-start-column="74" selection-end-line="49" selection-end-column="74" />
-          <folding />
+        <state relative-caret-position="45">
+          <caret line="156" column="31" selection-start-line="156" selection-start-column="31" selection-end-line="156" selection-end-column="31" />
+          <folding>
+            <element signature="e#3247#3517#0" expanded="false" />
+            <element signature="e#3576#3848#0" expanded="false" />
+            <element signature="e#3905#4174#0" expanded="false" />
+            <element signature="e#4233#4504#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/ts/main.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#137#177#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+        <state relative-caret-position="132">
+          <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#body#0;n#html#0;n#!!top" expanded="true" />

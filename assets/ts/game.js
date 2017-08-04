@@ -85,6 +85,7 @@ exports.Food = Food;
 var Game = (function () {
     function Game(element, scoreElement) {
         this.score = 0;
+        this.gameOver = false;
         this.screen = new screen_1.Screen(element, scoreElement);
         this.snake = new Snake(this.screen, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
         this.food = new Food(this.screen);
@@ -129,15 +130,18 @@ var Game = (function () {
         this.screen.cleanScreen();
         this.snake.draw();
         if (this.snake.checkGameOver()) {
-            alert("Game Over");
+            this.gameOver = true;
         }
-        if (this.snake.body[0].x == this.food.position.x && this.snake.body[0].y == this.food.position.y) {
-            this.snake.eatFood(this.food);
-            this.score += this.snake.body.length;
-            this.screen.scoreElement.innerHTML = "Score: " + this.score;
-            this.food.getRandomBloc();
+        else {
+            if (this.snake.body[0].x == this.food.position.x && this.snake.body[0].y == this.food.position.y) {
+                this.snake.eatFood(this.food);
+                this.score += this.snake.body.length;
+                this.screen.scoreElement.innerHTML = "Score: " + this.score;
+                this.food.getRandomBloc();
+            }
+            this.food.draw();
         }
-        this.food.draw();
+        return this.gameOver;
     };
     return Game;
 }());
