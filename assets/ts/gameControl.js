@@ -7,7 +7,7 @@ var KeyboardController = (function () {
     }
     KeyboardController.prototype.listen = function () {
         document.addEventListener('keydown', function (e) {
-            var code = e.keyCode;
+            var code = String(e.keyCode);
             if (code == "37") {
                 if (this.snake.direction != game_1.Direction.right)
                     this.direction = game_1.Direction.left;

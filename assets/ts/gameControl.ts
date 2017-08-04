@@ -17,7 +17,7 @@ export class KeyboardController implements GameController{
     listen() {
         document.addEventListener('keydown',function(e){
 
-            let code=e.keyCode;
+            let code:string=String(e.keyCode);
 
             if(code=="37"){ //gauche
                 if(this.snake.direction!=Direction.right)

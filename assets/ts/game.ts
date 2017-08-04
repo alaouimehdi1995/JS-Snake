@@ -32,8 +32,8 @@ export class Snake{
     draw(){
         let x:string,y:string;
         for(let i=0;i<this.body.length;i++){
-            x=parseInt(String(this.body[i].x))*parseInt(String(screen.blocSize))+"px";
-            y=parseInt(String(this.body[i].y))*parseInt(String(screen.blocSize))+"px";
+            x=parseInt(String(this.body[i].x))*parseInt(String(this.screen.blocSize))+"px";
+            y=parseInt(String(this.body[i].y))*parseInt(String(this.screen.blocSize))+"px";
             var Div=document.createElement('div');
             Div.className="bloc";
             Div.style.top=y;
@@ -107,34 +107,34 @@ export class Game{
         let head:Coordonates;
         if (this.snake.direction == Direction.right) {
 
-            if(this.snake.body[0].x<screen.border.right-1)
+            if(this.snake.body[0].x<this.screen.border.right-1)
                 head = new Coordonates( this.snake.body[0].x + 1,this.snake.body[0].y);
             else
-                head = new Coordonates(  screen.border.left, this.snake.body[0].y);
+                head = new Coordonates(  this.screen.border.left, this.snake.body[0].y);
         }
 
         else if (this.snake.direction == Direction.left) {
 
-            if(this.snake.body[0].x>screen.border.left)
+            if(this.snake.body[0].x>this.screen.border.left)
                 head = new Coordonates(  this.snake.body[0].x - 1, this.snake.body[0].y);
             else
-                head = new Coordonates(  screen.border.right-1, this.snake.body[0].y);
+                head = new Coordonates(  this.screen.border.right-1, this.snake.body[0].y);
         }
 
         else if (this.snake.direction == Direction.up) {
 
-            if(this.snake.body[0].y>screen.border.top)
+            if(this.snake.body[0].y>this.screen.border.top)
                 head = new Coordonates(  this.snake.body[0].x, this.snake.body[0].y - 1);
             else
-                head = new Coordonates( this.snake.body[0].x, screen.border.down-1);
+                head = new Coordonates( this.snake.body[0].x, this.screen.border.down-1);
         }
 
         else if (this.snake.direction == Direction.down) {
 
-            if(this.snake.body[0].y<screen.border.down-1)
+            if(this.snake.body[0].y<this.screen.border.down-1)
                 head = new Coordonates(  this.snake.body[0].x,  this.snake.body[0].y + 1);
             else
-                head = new Coordonates(  this.snake.body[0].x, screen.border.top);
+                head = new Coordonates(  this.snake.body[0].x, this.screen.border.top);
         }
 
         this.snake.move(head);
