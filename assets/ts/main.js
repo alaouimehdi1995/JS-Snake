@@ -7,16 +7,15 @@ var gameControl_1 = require("./gameControl");
 var element = document.getElementById('snake');
 var scoreElement = document.getElementById('score');
 var startGame = true;
-var game = new game_1.Game(element, scoreElement);
-var gameController = new gameControl_1.KeyboardController(game.snake);
+var gameController = new gameControl_1.KeyboardController();
+var game = new game_1.Game(element, scoreElement, gameController);
 var gameOver = false;
 var str = "Game Over\nWould you like replay a new game ?";
-var id = setInterval(function () {
+function play() {
     gameOver = game.start();
-    console.log(gameOver);
     if (gameOver) {
         clearInterval(id);
-        startGame = confirm(str);
     }
-}, 80);
+}
+var id = setInterval(play, 80);
 //# sourceMappingURL=main.js.map

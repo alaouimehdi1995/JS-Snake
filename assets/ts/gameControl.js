@@ -1,30 +1,50 @@
 "use strict";
 var game_1 = require("./game");
+function move(snake, direction) {
+    if (direction == game_1.Direction.left) {
+        if (snake.direction != game_1.Direction.right)
+            snake.direction = game_1.Direction.left;
+    }
+    else if (direction == game_1.Direction.up) {
+        if (snake.direction != game_1.Direction.down)
+            snake.direction = game_1.Direction.up;
+    }
+    else if (direction == game_1.Direction.right) {
+        if (snake.direction != game_1.Direction.left)
+            snake.direction = game_1.Direction.right;
+    }
+    else if (direction == game_1.Direction.down) {
+        if (snake.direction != game_1.Direction.up)
+            snake.direction = game_1.Direction.down;
+    }
+}
 var KeyboardController = (function () {
-    function KeyboardController(snake) {
+    function KeyboardController() {
+    }
+    KeyboardController.prototype.setSnake = function (snake) {
         this.snake = snake;
         this.listen(this.snake);
-    }
+    };
     KeyboardController.prototype.listen = function (snake) {
-        document.addEventListener('keydown', function (e) {
+        this.listenEvent = function (e) {
             var code = String(e.keyCode);
             if (code == "37") {
-                if (snake.direction != game_1.Direction.right)
-                    snake.direction = game_1.Direction.left;
+                move(snake, game_1.Direction.left);
             }
             else if (code == "38") {
-                if (snake.direction != game_1.Direction.down)
-                    snake.direction = game_1.Direction.up;
+                move(snake, game_1.Direction.up);
             }
             else if (code == "39") {
-                if (snake.direction != game_1.Direction.left)
-                    snake.direction = game_1.Direction.right;
+                move(snake, game_1.Direction.right);
             }
             else if (code == "40") {
-                if (snake.direction != game_1.Direction.up)
-                    snake.direction = game_1.Direction.down;
+                move(snake, game_1.Direction.down);
             }
-        }, false);
+        };
+        document.addEventListener('keydown', this.listenEvent, false);
+    };
+    KeyboardController.prototype.unlisten = function () {
+        var v = document.removeEventListener('keydown', this.listenEvent, false);
     };
     return KeyboardController;
 }());

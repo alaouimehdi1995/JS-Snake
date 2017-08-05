@@ -1,5 +1,8 @@
 "use strict";
 var screen_1 = require('./screen');
+/*
+* TODO:setScore() method in which we access to element and modify it's score content
+* */
 (function (Direction) {
     Direction[Direction["right"] = 0] = "right";
     Direction[Direction["left"] = 1] = "left";
@@ -16,9 +19,9 @@ var Coordonates = (function () {
 }());
 exports.Coordonates = Coordonates;
 var Snake = (function () {
-    function Snake(screen, initialPosition) {
+    function Snake(game, initialPosition) {
         this.body = [];
-        this.screen = screen;
+        this.game = game;
         this.direction = Direction.right;
         for (var i = 0; i < initialPosition.length; i++) {
             this.body.push(new Coordonates(initialPosition[i].x, initialPosition[i].y));
@@ -27,14 +30,14 @@ var Snake = (function () {
     Snake.prototype.draw = function () {
         var x, y;
         for (var i = 0; i < this.body.length; i++) {
-            x = parseInt(String(this.body[i].x)) * parseInt(String(this.screen.blocSize)) + "px";
-            y = parseInt(String(this.body[i].y)) * parseInt(String(this.screen.blocSize)) + "px";
+            x = parseInt(String(this.body[i].x)) * parseInt(String(this.game.screen.blocSize)) + "px";
+            y = parseInt(String(this.body[i].y)) * parseInt(String(this.game.screen.blocSize)) + "px";
             var Div = document.createElement('div');
             Div.className = "bloc";
             Div.style.top = y;
             Div.style.left = x;
             Div.innerHTML = ' ';
-            this.screen.element.appendChild(Div);
+            this.game.screen.element.appendChild(Div);
         }
     };
     Snake.prototype.move = function (head) {
@@ -56,41 +59,53 @@ var Snake = (function () {
 }());
 exports.Snake = Snake;
 var Food = (function () {
-    function Food(screen) {
-        this.screen = screen;
+    function Food(game) {
+        this.game = game;
         this.position = new Coordonates(null, null);
     }
     Food.prototype.randomIntFromInterval = function (min, max) {
         return (Math.random() * (max - min) + min);
     };
     Food.prototype.getRandomBloc = function () {
-        var px = parseInt(String(this.randomIntFromInterval(this.screen.border.left, this.screen.border.right)));
-        var py = parseInt(String(this.randomIntFromInterval(this.screen.border.top, this.screen.border.down)));
+        var px = parseInt(String(this.randomIntFromInterval(this.game.screen.border.left, this.game.screen.border.right)));
+        var py = parseInt(String(this.randomIntFromInterval(this.game.screen.border.top, this.game.screen.border.down)));
         this.position.x = px;
         this.position.y = py;
     };
     Food.prototype.draw = function () {
-        var x = parseInt("" + this.position.x) * parseInt("" + this.screen.blocSize) + "px";
-        var y = parseInt("" + this.position.y) * parseInt("" + this.screen.blocSize) + "px";
+        var x = parseInt("" + this.position.x) * parseInt("" + this.game.screen.blocSize) + "px";
+        var y = parseInt("" + this.position.y) * parseInt("" + this.game.screen.blocSize) + "px";
         var Div = document.createElement('div');
         Div.className = "bloc";
         Div.style.top = y;
         Div.style.left = x;
         Div.innerHTML = ' ';
-        this.screen.element.appendChild(Div);
+        this.game.screen.element.appendChild(Div);
     };
     return Food;
 }());
 exports.Food = Food;
 var Game = (function () {
-    function Game(element, scoreElement) {
+    function Game(element, scoreElement, gameController) {
         this.score = 0;
         this.gameOver = false;
         this.screen = new screen_1.Screen(element, scoreElement);
-        this.snake = new Snake(this.screen, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
-        this.food = new Food(this.screen);
+        this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
+        this.controller = gameController;
+        this.controller.setSnake(this.snake);
+        this.food = new Food(this);
         this.food.getRandomBloc();
     }
+    Game.prototype.restartGame = function () {
+        this.score = 0;
+        this.gameOver = false;
+        this.screen.cleanScreen();
+        this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
+        this.controller.unlisten();
+        this.controller.setSnake(this.snake);
+        this.food = new Food(this);
+        this.food.getRandomBloc();
+    };
     Game.prototype.setScreen = function (screen) {
         this.screen = screen;
     };
@@ -131,6 +146,11 @@ var Game = (function () {
         this.snake.draw();
         if (this.snake.checkGameOver()) {
             this.gameOver = true;
+            var str = "Game Over\nWould you like replay a new game ?";
+            var startGame = confirm(str);
+            if (startGame) {
+                this.restartGame();
+            }
         }
         else {
             if (this.snake.body[0].x == this.food.position.x && this.snake.body[0].y == this.food.position.y) {

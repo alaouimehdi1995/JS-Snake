@@ -13,6 +13,8 @@
 
     blocSize:number;
     border:Border;
+    initialWidth:string;
+    initialHeight:string;
     width:string;
     height:string;
     element;
@@ -21,6 +23,9 @@
     constructor(element,scoreElement,blocSize?:number){
         this.element=element;
         this.scoreElement=scoreElement;
+        this.initialWidth=getComputedStyle(this.element,null).width;
+        this.initialHeight=getComputedStyle(this.element,null).height;
+
         if(blocSize)
             this.blocSize=blocSize;
         else

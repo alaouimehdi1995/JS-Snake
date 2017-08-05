@@ -10,21 +10,14 @@ import {GameController, KeyboardController} from "./gameControl";
 var element=document.getElementById('snake');
 var scoreElement=document.getElementById('score');
 var startGame:boolean=true;
-
-    let game=new Game(element,scoreElement);
-    let gameController:GameController=new KeyboardController(game.snake);
+    let gameController:GameController=new KeyboardController();
+    let game=new Game(element,scoreElement,gameController);
     let gameOver=false;
     let str:string="Game Over\nWould you like replay a new game ?";
-
-    var id=setInterval(function(){
+    function play(){
         gameOver=game.start();
-        console.log(gameOver);
         if(gameOver){
             clearInterval(id);
-            startGame=confirm(str);
-
         }
-
-
-    }, 80);
-
+    }
+    var id = setInterval(play, 80);

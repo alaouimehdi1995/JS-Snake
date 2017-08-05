@@ -12,6 +12,8 @@ var Screen = (function () {
     function Screen(element, scoreElement, blocSize) {
         this.element = element;
         this.scoreElement = scoreElement;
+        this.initialWidth = getComputedStyle(this.element, null).width;
+        this.initialHeight = getComputedStyle(this.element, null).height;
         if (blocSize)
             this.blocSize = blocSize;
         else
