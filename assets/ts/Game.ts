@@ -1,5 +1,5 @@
-import {Screen} from './screen';
-import {GameController} from "./gameControl";
+import {Screen} from './Screen';
+import {GameController} from "./GameController";
 /*
 * TODO:setScore() method in which we access to element and modify it's score content
 * */

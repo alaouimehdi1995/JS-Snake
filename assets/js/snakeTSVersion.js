@@ -69,7 +69,7 @@
 
 "use strict";
 
-var screen_1 = __webpack_require__(2);
+var Screen_1 = __webpack_require__(2);
 /*
 * TODO:setScore() method in which we access to element and modify it's score content
 * */
@@ -159,7 +159,7 @@ var Game = (function () {
     function Game(element, scoreElement, gameController) {
         this.score = 0;
         this.gameOver = false;
-        this.screen = new screen_1.Screen(element, scoreElement);
+        this.screen = new Screen_1.Screen(element, scoreElement);
         this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
         this.controller = gameController;
         this.controller.setSnake(this.snake);
@@ -236,26 +236,24 @@ var Game = (function () {
     return Game;
 }());
 exports.Game = Game;
-//# sourceMappingURL=game.js.map
+//# sourceMappingURL=Game.js.map
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-var game_1 = __webpack_require__(0);
-var gameControl_1 = __webpack_require__(3);
 /**
  * Created by mehdi on 04/08/17.
  */
+
+var Game_1 = __webpack_require__(0);
+var GameController_1 = __webpack_require__(3);
 var element = document.getElementById('snake');
 var scoreElement = document.getElementById('score');
-var startGame = true;
-var gameController = new gameControl_1.KeyboardController();
-var game = new game_1.Game(element, scoreElement, gameController);
+var gameController = new GameController_1.KeyboardController();
+var game = new Game_1.Game(element, scoreElement, gameController);
 var gameOver = false;
-var str = "Game Over\nWould you like replay a new game ?";
 function play() {
     gameOver = game.start();
     if (gameOver) {
@@ -322,7 +320,7 @@ var Screen = (function () {
     return Screen;
 }());
 exports.Screen = Screen;
-//# sourceMappingURL=screen.js.map
+//# sourceMappingURL=Screen.js.map
 
 /***/ }),
 /* 3 */
@@ -330,23 +328,23 @@ exports.Screen = Screen;
 
 "use strict";
 
-var game_1 = __webpack_require__(0);
+var Game_1 = __webpack_require__(0);
 function move(snake, direction) {
-    if (direction == game_1.Direction.left) {
-        if (snake.direction != game_1.Direction.right)
-            snake.direction = game_1.Direction.left;
+    if (direction == Game_1.Direction.left) {
+        if (snake.direction != Game_1.Direction.right)
+            snake.direction = Game_1.Direction.left;
     }
-    else if (direction == game_1.Direction.up) {
-        if (snake.direction != game_1.Direction.down)
-            snake.direction = game_1.Direction.up;
+    else if (direction == Game_1.Direction.up) {
+        if (snake.direction != Game_1.Direction.down)
+            snake.direction = Game_1.Direction.up;
     }
-    else if (direction == game_1.Direction.right) {
-        if (snake.direction != game_1.Direction.left)
-            snake.direction = game_1.Direction.right;
+    else if (direction == Game_1.Direction.right) {
+        if (snake.direction != Game_1.Direction.left)
+            snake.direction = Game_1.Direction.right;
     }
-    else if (direction == game_1.Direction.down) {
-        if (snake.direction != game_1.Direction.up)
-            snake.direction = game_1.Direction.down;
+    else if (direction == Game_1.Direction.down) {
+        if (snake.direction != Game_1.Direction.up)
+            snake.direction = Game_1.Direction.down;
     }
 }
 var KeyboardController = (function () {
@@ -360,16 +358,16 @@ var KeyboardController = (function () {
         this.listenEvent = function (e) {
             var code = String(e.keyCode);
             if (code == "37") {
-                move(snake, game_1.Direction.left);
+                move(snake, Game_1.Direction.left);
             }
             else if (code == "38") {
-                move(snake, game_1.Direction.up);
+                move(snake, Game_1.Direction.up);
             }
             else if (code == "39") {
-                move(snake, game_1.Direction.right);
+                move(snake, Game_1.Direction.right);
             }
             else if (code == "40") {
-                move(snake, game_1.Direction.down);
+                move(snake, Game_1.Direction.down);
             }
         };
         document.addEventListener('keydown', this.listenEvent, false);
@@ -380,7 +378,7 @@ var KeyboardController = (function () {
     return KeyboardController;
 }());
 exports.KeyboardController = KeyboardController;
-//# sourceMappingURL=gameControl.js.map
+//# sourceMappingURL=GameController.js.map
 
 /***/ })
 /******/ ]);

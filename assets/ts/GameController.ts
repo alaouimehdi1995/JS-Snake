@@ -1,4 +1,4 @@
-import {Snake, Direction, Game} from "./game";
+import {Snake, Direction, Game} from "./Game";
 
 
 export interface GameController{
