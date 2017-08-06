@@ -59,7 +59,7 @@ function move(snake:Snake,direction:Direction){
         document.addEventListener('keydown',this.listenEvent,false);
     }
     unlisten(){
-        let v=document.removeEventListener('keydown',this.listenEvent,false);
+        document.removeEventListener('keydown',this.listenEvent,false);
     }
 
 }

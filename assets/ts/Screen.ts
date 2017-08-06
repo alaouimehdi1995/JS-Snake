@@ -26,8 +26,10 @@
         this.initialWidth=getComputedStyle(this.element,null).width;
         this.initialHeight=getComputedStyle(this.element,null).height;
 
-        if(blocSize)
+        if(blocSize){
             this.blocSize=blocSize;
+            document.getElementsByClassName("bloc")
+        }
         else
             this.blocSize=20;
         this.border=new Border();

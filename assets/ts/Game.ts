@@ -39,6 +39,8 @@ export enum Direction{
             y=parseInt(String(this.body[i].y))*parseInt(String(this.game.screen.blocSize))+"px";
             var Div=document.createElement('div');
             Div.className="bloc";
+            Div.style.width= this.game.screen.blocSize+"px";
+            Div.style.height= this.game.screen.blocSize+"px";
             Div.style.top=y;
             Div.style.left=x;
             Div.innerHTML=' ';
@@ -86,6 +88,8 @@ export enum Direction{
         var y=parseInt(""+this.position.y)*parseInt(""+this.game.screen.blocSize)+"px";
         var Div=document.createElement('div');
         Div.className="bloc";
+        Div.style.width= this.game.screen.blocSize+"px";
+        Div.style.height= this.game.screen.blocSize+"px";
         Div.style.top=y;
         Div.style.left=x;
         Div.innerHTML=' ';
@@ -101,10 +105,13 @@ export enum Direction{
     snake:Snake;
     food:Food;
     controller:GameController;
-    constructor(element,scoreElement,gameController:GameController){
+    constructor(element,scoreElement,gameController:GameController,blockSize?:number){
         this.score=0;
         this.gameOver=false;
-        this.screen=new Screen(element,scoreElement);
+        if(blockSize)
+            this.screen=new Screen(element,scoreElement,blockSize);
+        else
+            this.screen=new Screen(element,scoreElement);
         this.snake=new Snake(this,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]);
         this.controller=gameController;
         this.controller.setSnake(this.snake);
@@ -116,7 +123,7 @@ export enum Direction{
         this.gameOver=false;
         this.screen.cleanScreen();
         this.snake=new Snake(this,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]);
-        this.controller.unlisten();
+        //this.controller.unlisten();
         this.controller.setSnake(this.snake);
         this.food=new Food(this);
         this.food.getRandomBloc();
