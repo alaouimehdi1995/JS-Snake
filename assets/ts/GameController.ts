@@ -67,6 +67,7 @@ function move(snake:Snake,direction:Direction){
 
 export class TouchScreenController implements GameController{
     snake:Snake;
+    hammer;
     xDown:number;
     yDown:number;
     listenEvent;
@@ -74,51 +75,35 @@ export class TouchScreenController implements GameController{
         this.xDown=null;
         this.yDown=null;
     }
-    handleTouchStart(evt) {
-        this.xDown = evt.touches[0].clientX;
-        this.yDown = evt.touches[0].clientY;
-    };
+
     setSnake(snake:Snake){
         this.snake=snake;
         this.listen(this.snake);
     }
     listen(snake:Snake){
-        this.listenEvent=function (evt) {
-            if ( ! this.xDown || ! this.yDown ) {
-                return;
+        this.listenEvent=function(ev){
+            if(ev.type=="panleft"){
+                move(snake,Direction.left);
             }
-
-            var xUp = evt.touches[0].clientX;
-            var yUp = evt.touches[0].clientY;
-
-            var xDiff = this.xDown - xUp;
-            var yDiff = this.yDown - yUp;
-
-            if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-                if ( xDiff > 0 ) {
-                    move(snake,Direction.left);
-                } else {
-                    move(snake,Direction.right);
-                }
-            } else {
-                if ( yDiff > 0 ) {
-                    move(snake,Direction.up);
-                } else {
-                    move(snake,Direction.down);
-                }
+            else if(ev.type=="panright"){
+                move(snake,Direction.right);
             }
-            /* reset values */
-            this.xDown = null;
-            this.yDown = null;
-        };
+            else if(ev.type=="panup"){
+                move(snake,Direction.up);
+            }
+            else if (ev.type=="pandown"){
+                move(snake,Direction.down);
+            }
+        }
 
+        this.hammer= new Hammer(document);
 
-        document.addEventListener('touchstart', this.handleTouchStart, false);
-        document.addEventListener('touchmove', this.listenEvent, false);
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+
+        this.hammer.on("panleft panright panup pandown", this.listenEvent);
     }
     unlisten(){
-        document.removeEventListener('touchstart', this.handleTouchStart, false);
-        document.removeEventListener('touchmove', this.listenEvent, false);
+        this.hammer.off("panleft panright panup pandown");
     }
 
 }

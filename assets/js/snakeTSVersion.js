@@ -104,6 +104,8 @@ var Snake = (function () {
             y = parseInt(String(this.body[i].y)) * parseInt(String(this.game.screen.blocSize)) + "px";
             var Div = document.createElement('div');
             Div.className = "bloc";
+            Div.style.width = this.game.screen.blocSize + "px";
+            Div.style.height = this.game.screen.blocSize + "px";
             Div.style.top = y;
             Div.style.left = x;
             Div.innerHTML = ' ';
@@ -147,6 +149,8 @@ var Food = (function () {
         var y = parseInt("" + this.position.y) * parseInt("" + this.game.screen.blocSize) + "px";
         var Div = document.createElement('div');
         Div.className = "bloc";
+        Div.style.width = this.game.screen.blocSize + "px";
+        Div.style.height = this.game.screen.blocSize + "px";
         Div.style.top = y;
         Div.style.left = x;
         Div.innerHTML = ' ';
@@ -156,10 +160,13 @@ var Food = (function () {
 }());
 exports.Food = Food;
 var Game = (function () {
-    function Game(element, scoreElement, gameController) {
+    function Game(element, scoreElement, gameController, blockSize) {
         this.score = 0;
         this.gameOver = false;
-        this.screen = new Screen_1.Screen(element, scoreElement);
+        if (blockSize)
+            this.screen = new Screen_1.Screen(element, scoreElement, blockSize);
+        else
+            this.screen = new Screen_1.Screen(element, scoreElement);
         this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
         this.controller = gameController;
         this.controller.setSnake(this.snake);
@@ -171,7 +178,7 @@ var Game = (function () {
         this.gameOver = false;
         this.screen.cleanScreen();
         this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
-        this.controller.unlisten();
+        //this.controller.unlisten();
         this.controller.setSnake(this.snake);
         this.food = new Food(this);
         this.food.getRandomBloc();
@@ -251,8 +258,10 @@ var Game_1 = __webpack_require__(0);
 var GameController_1 = __webpack_require__(3);
 var element = document.getElementById('snake');
 var scoreElement = document.getElementById('score');
-var gameController = new GameController_1.KeyboardController();
-var game = new Game_1.Game(element, scoreElement, gameController);
+var gameSpeed = parseFloat(element.getAttribute("game-speed"));
+var blockSize = parseFloat(element.getAttribute("block-size"));
+var gameController = new GameController_1.TouchScreenController();
+var game = new Game_1.Game(element, scoreElement, gameController, blockSize);
 var gameOver = false;
 function play() {
     gameOver = game.start();
@@ -260,7 +269,7 @@ function play() {
         clearInterval(id);
     }
 }
-var id = setInterval(play, 80);
+var id = setInterval(play, gameSpeed);
 //# sourceMappingURL=main.js.map
 
 /***/ }),
@@ -284,8 +293,10 @@ var Screen = (function () {
         this.scoreElement = scoreElement;
         this.initialWidth = getComputedStyle(this.element, null).width;
         this.initialHeight = getComputedStyle(this.element, null).height;
-        if (blocSize)
+        if (blocSize) {
             this.blocSize = blocSize;
+            document.getElementsByClassName("bloc");
+        }
         else
             this.blocSize = 20;
         this.border = new Border();
@@ -373,11 +384,45 @@ var KeyboardController = (function () {
         document.addEventListener('keydown', this.listenEvent, false);
     };
     KeyboardController.prototype.unlisten = function () {
-        var v = document.removeEventListener('keydown', this.listenEvent, false);
+        document.removeEventListener('keydown', this.listenEvent, false);
     };
     return KeyboardController;
 }());
 exports.KeyboardController = KeyboardController;
+var TouchScreenController = (function () {
+    function TouchScreenController() {
+        this.xDown = null;
+        this.yDown = null;
+    }
+    TouchScreenController.prototype.setSnake = function (snake) {
+        this.snake = snake;
+        this.listen(this.snake);
+    };
+    TouchScreenController.prototype.listen = function (snake) {
+        this.listenEvent = function (ev) {
+            if (ev.type == "panleft") {
+                move(snake, Game_1.Direction.left);
+            }
+            else if (ev.type == "panright") {
+                move(snake, Game_1.Direction.right);
+            }
+            else if (ev.type == "panup") {
+                move(snake, Game_1.Direction.up);
+            }
+            else if (ev.type == "pandown") {
+                move(snake, Game_1.Direction.down);
+            }
+        };
+        this.hammer = new Hammer(document);
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammer.on("panleft panright panup pandown", this.listenEvent);
+    };
+    TouchScreenController.prototype.unlisten = function () {
+        this.hammer.off("panleft panright panup pandown");
+    };
+    return TouchScreenController;
+}());
+exports.TouchScreenController = TouchScreenController;
 //# sourceMappingURL=GameController.js.map
 
 /***/ })
