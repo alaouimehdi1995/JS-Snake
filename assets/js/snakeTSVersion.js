@@ -413,7 +413,7 @@ var TouchScreenController = (function () {
                 move(snake, Game_1.Direction.down);
             }
         };
-        this.hammer = new Hammer(document);
+        this.hammer = new Hammer(document.getElementsByTagName("body")[0]);
         this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 1, velocity: 0.1 });
         this.hammer.on("panleft panright panup pandown", this.listenEvent);
     };
