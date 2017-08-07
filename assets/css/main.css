@@ -10,11 +10,11 @@
 }
 .snake{
     border: double;
-    width:70%;
-    height: 60%;
+    width:50%;
+    height: 50%;
     position: absolute;
-    top: 40%;
-    left:15%;
+    top: 25%;
+    left:25%;
     display: block;
     border-width: 3px;
     background-color: greenyellow;
