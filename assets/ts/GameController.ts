@@ -98,7 +98,7 @@ export class TouchScreenController implements GameController{
 
         this.hammer= new Hammer(document);
 
-        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 1, velocity: 0.1 });
 
         this.hammer.on("panleft panright panup pandown", this.listenEvent);
     }
