@@ -97,6 +97,13 @@ var Snake = (function () {
             this.body.push(new Coordonates(initialPosition[i].x, initialPosition[i].y));
         }
     }
+    Snake.prototype.check = function (x, y) {
+        for (var i = 0; i < this.body.length; i++) {
+            if (this.body[i].x == x && this.body[i].y == y)
+                return true;
+        }
+        return false;
+    };
     Snake.prototype.draw = function () {
         var x, y;
         for (var i = 0; i < this.body.length; i++) {
@@ -139,14 +146,16 @@ var Food = (function () {
         return (Math.random() * (max - min) + min);
     };
     Food.prototype.getRandomBloc = function () {
-        var px = parseInt(String(this.randomIntFromInterval(this.game.screen.border.left, this.game.screen.border.right)));
-        var py = parseInt(String(this.randomIntFromInterval(this.game.screen.border.top, this.game.screen.border.down)));
+        do {
+            var px = parseInt(String(this.randomIntFromInterval(this.game.screen.border.left, this.game.screen.border.right)));
+            var py = parseInt(String(this.randomIntFromInterval(this.game.screen.border.top, this.game.screen.border.down)));
+        } while (this.game.snake.check(px, py));
         this.position.x = px;
         this.position.y = py;
     };
     Food.prototype.draw = function () {
-        var x = parseInt("" + this.position.x) * parseInt("" + this.game.screen.blocSize) + "px";
-        var y = parseInt("" + this.position.y) * parseInt("" + this.game.screen.blocSize) + "px";
+        var x = parseInt(String(this.position.x)) * parseInt(String(this.game.screen.blocSize)) + "px";
+        var y = parseInt(String(this.position.y)) * parseInt(String(this.game.screen.blocSize)) + "px";
         var Div = document.createElement('div');
         Div.className = "bloc";
         Div.style.width = this.game.screen.blocSize + "px";
@@ -160,15 +169,18 @@ var Food = (function () {
 }());
 exports.Food = Food;
 var Game = (function () {
-    function Game(element, scoreElement, gameController, blockSize) {
+    function Game(element, gameController, blockSize) {
         this.score = 0;
         this.gameOver = false;
         if (blockSize)
-            this.screen = new Screen_1.Screen(element, scoreElement, blockSize);
+            this.screen = new Screen_1.Screen(element, blockSize);
         else
-            this.screen = new Screen_1.Screen(element, scoreElement);
+            this.screen = new Screen_1.Screen(element);
         this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
-        this.controller = gameController;
+        if (gameController)
+            this.controller = gameController;
+        else
+            this.controller = this.screen.getRightController();
         this.controller.setSnake(this.snake);
         this.food = new Food(this);
         this.food.getRandomBloc();
@@ -178,7 +190,6 @@ var Game = (function () {
         this.gameOver = false;
         this.screen.cleanScreen();
         this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
-        //this.controller.unlisten();
         this.controller.setSnake(this.snake);
         this.food = new Food(this);
         this.food.getRandomBloc();
@@ -191,6 +202,9 @@ var Game = (function () {
     };
     Game.prototype.setFood = function (food) {
         this.food = food;
+    };
+    Game.prototype.updateScore = function () {
+        this.screen.scoreElement.innerHTML = "Score: " + String(this.score);
     };
     Game.prototype.start = function () {
         var head;
@@ -221,6 +235,7 @@ var Game = (function () {
         this.snake.move(head);
         this.screen.cleanScreen();
         this.snake.draw();
+        this.updateScore();
         if (this.snake.checkGameOver()) {
             this.gameOver = true;
             var str = "Game Over\nWould you like replay a new game ?";
@@ -233,7 +248,7 @@ var Game = (function () {
             if (this.snake.body[0].x == this.food.position.x && this.snake.body[0].y == this.food.position.y) {
                 this.snake.eatFood(this.food);
                 this.score += this.snake.body.length;
-                this.screen.scoreElement.innerHTML = "Score: " + this.score;
+                this.updateScore();
                 this.food.getRandomBloc();
             }
             this.food.draw();
@@ -255,13 +270,10 @@ exports.Game = Game;
  */
 
 var Game_1 = __webpack_require__(0);
-var GameController_1 = __webpack_require__(3);
 var element = document.getElementById('snake');
-var scoreElement = document.getElementById('score');
 var gameSpeed = parseFloat(element.getAttribute("game-speed"));
 var blockSize = parseFloat(element.getAttribute("block-size"));
-var gameController = new GameController_1.TouchScreenController();
-var game = new Game_1.Game(element, scoreElement, gameController, blockSize);
+var game = new Game_1.Game(element, null, blockSize);
 var gameOver = false;
 function play() {
     gameOver = game.start();
@@ -277,10 +289,11 @@ var id = setInterval(play, gameSpeed);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+var GameController_1 = __webpack_require__(3);
 /**
  * Created by mehdi on 04/08/17.
  */
-
 var Border = (function () {
     function Border() {
     }
@@ -288,9 +301,8 @@ var Border = (function () {
 }());
 exports.Border = Border;
 var Screen = (function () {
-    function Screen(element, scoreElement, blocSize) {
+    function Screen(element, blocSize) {
         this.element = element;
-        this.scoreElement = scoreElement;
         this.initialWidth = getComputedStyle(this.element, null).width;
         this.initialHeight = getComputedStyle(this.element, null).height;
         if (blocSize) {
@@ -317,6 +329,13 @@ var Screen = (function () {
         this.border.top = 0;
         this.border.right = parseFloat(this.width) / this.blocSize;
         this.border.down = parseFloat(this.height) / this.blocSize;
+        var Div = document.createElement('div');
+        Div.className = "scoreBlock";
+        Div.style.left = (parseInt(String(this.border.left)) + 5) * parseInt(String(this.blocSize)) + "px";
+        Div.style.top = (parseInt(String(this.border.top)) - 2) * parseInt(String(this.blocSize)) + "px";
+        Div.style.width = 5 * this.blocSize + "px";
+        Div.style.height = this.blocSize + "px";
+        this.scoreElement = Div;
     };
     Screen.prototype.cleanScreen = function () {
         var parent = this.element.parentNode;
@@ -327,6 +346,13 @@ var Screen = (function () {
         newDiv.className = "snake";
         parent.replaceChild(newDiv, this.element);
         this.element = newDiv;
+        this.element.appendChild(this.scoreElement);
+    };
+    Screen.prototype.getRightController = function () {
+        if ('ontouchstart' in window || navigator.maxTouchPoints)
+            return new GameController_1.TouchScreenController;
+        else
+            return new GameController_1.KeyboardController;
     };
     return Screen;
 }());
