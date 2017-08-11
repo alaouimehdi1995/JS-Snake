@@ -1,8 +1,7 @@
 import {Screen} from './Screen';
 import {GameController} from "./GameController";
-/*
-* TODO:setScore() method in which we access to element and modify it's score content
-* */
+
+
 export enum Direction{
     right,
     left,
@@ -45,7 +44,7 @@ export enum Direction{
             x=parseInt(String(this.body[i].x))*parseInt(String(this.game.screen.blocSize))+"px";
             y=parseInt(String(this.body[i].y))*parseInt(String(this.game.screen.blocSize))+"px";
             var Div=document.createElement('div');
-            Div.className="bloc";
+            Div.className="snakeBloc";
             Div.style.width= this.game.screen.blocSize+"px";
             Div.style.height= this.game.screen.blocSize+"px";
             Div.style.top=y;
@@ -61,7 +60,6 @@ export enum Direction{
     eatFood(food){
         this.body.unshift(new Coordonates(food.position.x,food.position.y));
     }
-
     checkGameOver():boolean{
         for(let i=1;i<this.body.length;i++){
             if(this.body[i].x==this.body[0].x && this.body[i].y==this.body[0].y){
@@ -96,7 +94,7 @@ export enum Direction{
         var x=parseInt(String(this.position.x))*parseInt(String(this.game.screen.blocSize))+"px";
         var y=parseInt(String(this.position.y))*parseInt(String(this.game.screen.blocSize))+"px";
         let Div=document.createElement('div');
-        Div.className="bloc";
+        Div.className="foodBloc";
         Div.style.width= this.game.screen.blocSize+"px";
         Div.style.height= this.game.screen.blocSize+"px";
         Div.style.top=y;
@@ -114,18 +112,14 @@ export enum Direction{
     snake:Snake;
     food:Food;
     controller:GameController;
-    constructor(element,gameController?:GameController,blockSize?:number){
+    withWalls:boolean;
+    constructor(element,gameController:GameController,blockSize:number,withWalls:boolean){
         this.score=0;
         this.gameOver=false;
-        if(blockSize)
-            this.screen=new Screen(element,blockSize);
-        else
-            this.screen=new Screen(element);
+        this.screen=new Screen(element,blockSize);
         this.snake=new Snake(this,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]);
-        if(gameController)
-            this.controller=gameController;
-        else
-            this.controller=this.screen.getRightController();
+        this.controller = gameController;
+        this.withWalls=withWalls;
         this.controller.setSnake(this.snake);
         this.food=new Food(this);
         this.food.getRandomBloc();
@@ -157,40 +151,56 @@ export enum Direction{
 
             if(this.snake.body[0].x<this.screen.border.right-1)
                 head = new Coordonates( this.snake.body[0].x + 1,this.snake.body[0].y);
-            else
-                head = new Coordonates(  this.screen.border.left, this.snake.body[0].y);
+            else {
+                if(this.withWalls)
+                    this.gameOver=true;
+
+                head = new Coordonates(this.screen.border.left, this.snake.body[0].y);
+            }
         }
 
         else if (this.snake.direction == Direction.left) {
 
             if(this.snake.body[0].x>this.screen.border.left)
                 head = new Coordonates(  this.snake.body[0].x - 1, this.snake.body[0].y);
-            else
-                head = new Coordonates(  this.screen.border.right-1, this.snake.body[0].y);
+            else {
+                if(this.withWalls)
+                    this.gameOver=true;
+
+                head = new Coordonates(this.screen.border.right - 1, this.snake.body[0].y);
+            }
         }
 
         else if (this.snake.direction == Direction.up) {
 
             if(this.snake.body[0].y>this.screen.border.top)
                 head = new Coordonates(  this.snake.body[0].x, this.snake.body[0].y - 1);
-            else
-                head = new Coordonates( this.snake.body[0].x, this.screen.border.down-1);
+            else {
+                if(this.withWalls)
+                    this.gameOver=true;
+
+                head = new Coordonates(this.snake.body[0].x, this.screen.border.down - 1);
+            }
         }
 
         else if (this.snake.direction == Direction.down) {
 
             if(this.snake.body[0].y<this.screen.border.down-1)
                 head = new Coordonates(  this.snake.body[0].x,  this.snake.body[0].y + 1);
-            else
-                head = new Coordonates(  this.snake.body[0].x, this.screen.border.top);
-        }
+            else {
+                if(this.withWalls)
+                    this.gameOver=true;
 
+                head = new Coordonates(this.snake.body[0].x, this.screen.border.top);
+            }
+
+        }
         this.snake.move(head);
         this.screen.cleanScreen();
         this.snake.draw();
         this.updateScore();
 
-        if(this.snake.checkGameOver()){
+        if(this.gameOver || this.snake.checkGameOver()){
             this.gameOver=true;
             let str:string="Game Over\nWould you like replay a new game ?";
             let startGame=confirm(str);
@@ -199,6 +209,7 @@ export enum Direction{
             }
         }
         else {
+
             if (this.snake.body[0].x == this.food.position.x && this.snake.body[0].y == this.food.position.y) {
                 this.snake.eatFood(this.food);
                 this.score += this.snake.body.length;

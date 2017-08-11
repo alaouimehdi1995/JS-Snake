@@ -1,16 +1,14 @@
-body{
-    color:white;
-    background-color: black;
-}
-.bloc {
+.snakeBloc {
     position: absolute;
-    width: 20px; height: 20px;
-    top:0px;left:0px;
-    text-align: center;
-    font-size: 40px;
     background-color: #222;
     color: #CCC;
-    border-radius: 10%;
+    border-radius: 18%;
+}
+.foodBloc {
+    position: absolute;
+    background-color: #830716;
+    color: #CCC;
+    border-radius: 18%;
 }
 .snake{
     border: solid;

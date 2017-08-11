@@ -4,10 +4,18 @@
         <meta charset="UTF-8">
         <title>Snake</title>
     </head>
-        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="main.css" rel="stylesheet">
+        <link href="assets/css/snake.css" rel="stylesheet">
     <body>
         <div style="text-align: center;"><h2>Snake Game</h2><h3>By ALAOUI Mehdi</h3></div>
-        <div id="snake"  class="snake" game-speed="80" block-size="20"></div>
+        <div id="snake"  class="snake" game-speed="auto" block-size="25" game-controller="auto" game-mode="walls"></div>
+        <!--
+         Game Attributes:
+            - game-speed: auto or a number
+            - block-size: auto or a number
+            - game-controller:auto or keyboard or touchscreen
+            - game-mode: walls or nowalls
+        -->
 
         <script type="text/javascript" src="assets/js/hammer.min.js"></script>
         <script type="text/javascript" src="assets/js/snake.min.js"></script>

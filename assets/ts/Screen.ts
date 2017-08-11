@@ -77,12 +77,7 @@ import {TouchScreenController, KeyboardController, GameController} from "./GameC
 
     }
 
-     public getRightController():GameController{
-         if('ontouchstart' in window || navigator.maxTouchPoints)
-             return new TouchScreenController;
-         else
-             return new KeyboardController;
-     }
+
 
 
 }

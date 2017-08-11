@@ -70,9 +70,6 @@
 "use strict";
 
 var Screen_1 = __webpack_require__(2);
-/*
-* TODO:setScore() method in which we access to element and modify it's score content
-* */
 (function (Direction) {
     Direction[Direction["right"] = 0] = "right";
     Direction[Direction["left"] = 1] = "left";
@@ -110,7 +107,7 @@ var Snake = (function () {
             x = parseInt(String(this.body[i].x)) * parseInt(String(this.game.screen.blocSize)) + "px";
             y = parseInt(String(this.body[i].y)) * parseInt(String(this.game.screen.blocSize)) + "px";
             var Div = document.createElement('div');
-            Div.className = "bloc";
+            Div.className = "snakeBloc";
             Div.style.width = this.game.screen.blocSize + "px";
             Div.style.height = this.game.screen.blocSize + "px";
             Div.style.top = y;
@@ -157,7 +154,7 @@ var Food = (function () {
         var x = parseInt(String(this.position.x)) * parseInt(String(this.game.screen.blocSize)) + "px";
         var y = parseInt(String(this.position.y)) * parseInt(String(this.game.screen.blocSize)) + "px";
         var Div = document.createElement('div');
-        Div.className = "bloc";
+        Div.className = "foodBloc";
         Div.style.width = this.game.screen.blocSize + "px";
         Div.style.height = this.game.screen.blocSize + "px";
         Div.style.top = y;
@@ -169,18 +166,13 @@ var Food = (function () {
 }());
 exports.Food = Food;
 var Game = (function () {
-    function Game(element, gameController, blockSize) {
+    function Game(element, gameController, blockSize, withWalls) {
         this.score = 0;
         this.gameOver = false;
-        if (blockSize)
-            this.screen = new Screen_1.Screen(element, blockSize);
-        else
-            this.screen = new Screen_1.Screen(element);
+        this.screen = new Screen_1.Screen(element, blockSize);
         this.snake = new Snake(this, [{ x: 2, y: 2 }, { x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }, { x: 0, y: 0 }]);
-        if (gameController)
-            this.controller = gameController;
-        else
-            this.controller = this.screen.getRightController();
+        this.controller = gameController;
+        this.withWalls = withWalls;
         this.controller.setSnake(this.snake);
         this.food = new Food(this);
         this.food.getRandomBloc();
@@ -211,32 +203,44 @@ var Game = (function () {
         if (this.snake.direction == Direction.right) {
             if (this.snake.body[0].x < this.screen.border.right - 1)
                 head = new Coordonates(this.snake.body[0].x + 1, this.snake.body[0].y);
-            else
+            else {
+                if (this.withWalls)
+                    this.gameOver = true;
                 head = new Coordonates(this.screen.border.left, this.snake.body[0].y);
+            }
         }
         else if (this.snake.direction == Direction.left) {
             if (this.snake.body[0].x > this.screen.border.left)
                 head = new Coordonates(this.snake.body[0].x - 1, this.snake.body[0].y);
-            else
+            else {
+                if (this.withWalls)
+                    this.gameOver = true;
                 head = new Coordonates(this.screen.border.right - 1, this.snake.body[0].y);
+            }
         }
         else if (this.snake.direction == Direction.up) {
             if (this.snake.body[0].y > this.screen.border.top)
                 head = new Coordonates(this.snake.body[0].x, this.snake.body[0].y - 1);
-            else
+            else {
+                if (this.withWalls)
+                    this.gameOver = true;
                 head = new Coordonates(this.snake.body[0].x, this.screen.border.down - 1);
+            }
         }
         else if (this.snake.direction == Direction.down) {
             if (this.snake.body[0].y < this.screen.border.down - 1)
                 head = new Coordonates(this.snake.body[0].x, this.snake.body[0].y + 1);
-            else
+            else {
+                if (this.withWalls)
+                    this.gameOver = true;
                 head = new Coordonates(this.snake.body[0].x, this.screen.border.top);
+            }
         }
         this.snake.move(head);
         this.screen.cleanScreen();
         this.snake.draw();
         this.updateScore();
-        if (this.snake.checkGameOver()) {
+        if (this.gameOver || this.snake.checkGameOver()) {
             this.gameOver = true;
             var str = "Game Over\nWould you like replay a new game ?";
             var startGame = confirm(str);
@@ -270,10 +274,10 @@ exports.Game = Game;
  */
 
 var Game_1 = __webpack_require__(0);
+var DataExtractor_1 = __webpack_require__(3);
 var element = document.getElementById('snake');
-var gameSpeed = parseFloat(element.getAttribute("game-speed"));
-var blockSize = parseFloat(element.getAttribute("block-size"));
-var game = new Game_1.Game(element, null, blockSize);
+var dataExtractor = new DataExtractor_1.DataExtractor(element);
+var game = new Game_1.Game(element, dataExtractor.getGameController(), dataExtractor.getBlockSize(), dataExtractor.getGameMode());
 var gameOver = false;
 function play() {
     gameOver = game.start();
@@ -281,7 +285,7 @@ function play() {
         clearInterval(id);
     }
 }
-var id = setInterval(play, gameSpeed);
+var id = setInterval(play, dataExtractor.getGameSpeed());
 //# sourceMappingURL=main.js.map
 
 /***/ }),
@@ -290,7 +294,6 @@ var id = setInterval(play, gameSpeed);
 
 "use strict";
 
-var GameController_1 = __webpack_require__(3);
 /**
  * Created by mehdi on 04/08/17.
  */
@@ -348,12 +351,6 @@ var Screen = (function () {
         this.element = newDiv;
         this.element.appendChild(this.scoreElement);
     };
-    Screen.prototype.getRightController = function () {
-        if ('ontouchstart' in window || navigator.maxTouchPoints)
-            return new GameController_1.TouchScreenController;
-        else
-            return new GameController_1.KeyboardController;
-    };
     return Screen;
 }());
 exports.Screen = Screen;
@@ -361,6 +358,81 @@ exports.Screen = Screen;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var GameController_1 = __webpack_require__(4);
+/**
+ * Created by mehdi on 11/08/17.
+ */
+var defaultSettings = {
+    gameSpeed: 80,
+    blockSize: 20,
+    gameModeWithWalls: false,
+    gameController: null
+};
+var DataExtractor = (function () {
+    function DataExtractor(element) {
+        this.extractGameSpeed(element);
+        this.extractBlockSize(element);
+        this.extractGameController(element);
+        this.extractGameMode(element);
+    }
+    DataExtractor.prototype.extractGameSpeed = function (element) {
+        var gameSpeed = parseFloat(element.getAttribute("game-speed"));
+        if (gameSpeed)
+            this.gameSpeed = gameSpeed;
+        else
+            this.gameSpeed = defaultSettings.gameSpeed;
+    };
+    DataExtractor.prototype.extractBlockSize = function (element) {
+        var blockSize = parseFloat(element.getAttribute("block-size"));
+        if (blockSize)
+            this.blockSize = blockSize;
+        else
+            this.blockSize = defaultSettings.blockSize;
+    };
+    DataExtractor.prototype.extractGameController = function (element) {
+        var gameController = element.getAttribute("game-controller");
+        if (gameController) {
+            if (gameController.toLowerCase() == "keyboard") {
+                this.gameController = new GameController_1.KeyboardController();
+            }
+            else if (gameController.toLowerCase() == "touchscreen") {
+                this.gameController = new GameController_1.TouchScreenController();
+            }
+            else {
+                this.gameController = this.getRightController();
+            }
+        }
+        else
+            this.gameController = this.getRightController();
+    };
+    DataExtractor.prototype.extractGameMode = function (element) {
+        var gameMode = element.getAttribute("game-mode");
+        if (gameMode && gameMode.toLowerCase() == "walls")
+            this.gameModeWithWalls = true;
+        else
+            this.gameModeWithWalls = false;
+    };
+    DataExtractor.prototype.getRightController = function () {
+        if ('ontouchstart' in window || navigator.maxTouchPoints)
+            return new GameController_1.TouchScreenController;
+        else
+            return new GameController_1.KeyboardController;
+    };
+    DataExtractor.prototype.getGameSpeed = function () { return this.gameSpeed; };
+    DataExtractor.prototype.getBlockSize = function () { return this.blockSize; };
+    DataExtractor.prototype.getGameController = function () { return this.gameController; };
+    DataExtractor.prototype.getGameMode = function () { return this.gameModeWithWalls; };
+    return DataExtractor;
+}());
+exports.DataExtractor = DataExtractor;
+//# sourceMappingURL=DataExtractor.js.map
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
