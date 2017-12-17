@@ -6,7 +6,8 @@ export enum Direction{
     right,
     left,
     up,
-    down
+    down,
+    paused
 }
  export class Coordonates{
     x:number;
@@ -20,6 +21,7 @@ export enum Direction{
  export class Snake{
     body:Coordonates[];
     direction:Direction;
+    lastDirection:Direction;
     game:Game;
 
     constructor(game:Game,initialPosition){
@@ -30,6 +32,20 @@ export enum Direction{
             this.body.push(new Coordonates(initialPosition[i].x,initialPosition[i].y));
         }
 
+    }
+    setPause(){
+        if(this.direction==Direction.paused){
+            this.direction=this.lastDirection;
+        }
+        else{
+            this.lastDirection=this.direction;
+            this.direction=Direction.paused;
+        }
+
+
+    }
+    isPaused(){
+        return this.direction==Direction.paused;
     }
     check(x:number,y:number):boolean{
         for(let i=0;i<this.body.length;i++){
@@ -195,10 +211,13 @@ export enum Direction{
             }
 
         }
-        this.snake.move(head);
-        this.screen.cleanScreen();
-        this.snake.draw();
-        this.updateScore();
+        if(!this.snake.isPaused()){
+            this.snake.move(head);
+            this.screen.cleanScreen();
+            this.snake.draw();
+            this.updateScore();
+        }
+
 
         if(this.gameOver || this.snake.checkGameOver()){
             this.gameOver=true;

@@ -25,6 +25,11 @@ function move(snake:Snake,direction:Direction){
         if(snake.direction!=Direction.up)
             snake.direction=Direction.down;
     }
+    else if(direction==Direction.paused){//en pause
+        console.log("Paused kda mna");
+        snake.setPause();
+
+    }
 }
 
  export class KeyboardController implements GameController{
@@ -52,6 +57,9 @@ function move(snake:Snake,direction:Direction){
             }
             else if(code=="40"){ //bas
                 move(snake,Direction.down);
+            }
+            else if(code=="32"){//en pause
+                move(snake,Direction.paused);
             }
 
         }
@@ -94,16 +102,19 @@ export class TouchScreenController implements GameController{
             else if (ev.type=="pandown"){
                 move(snake,Direction.down);
             }
+            else if(ev.type=="doubletap"){
+                move(snake,Direction.paused);
+            }
         }
 
         this.hammer= new Hammer(document.getElementsByTagName("body")[0]);
 
         this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 6, velocity: 0.2 });
 
-        this.hammer.on("panleft panright panup pandown", this.listenEvent);
+        this.hammer.on("doubletap panleft panright panup pandown", this.listenEvent);
     }
     unlisten(){
-        this.hammer.off("panleft panright panup pandown");
+        this.hammer.off("doubletap panleft panright panup pandown");
     }
 
 }

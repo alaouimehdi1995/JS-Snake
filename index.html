@@ -18,6 +18,12 @@
         -->
 
         <script type="text/javascript" src="assets/js/hammer.min.js"></script>
-        <script type="text/javascript" src="assets/js/snake.min.js"></script>
+        <script type="text/javascript" src="assets/ts/snake.js"></script>
+        <script>
+
+            var element=document.getElementById('snake');
+            var snakeGame=SnakeAPI(element);
+            snakeGame.play();
+        </script>
     </body>
 </html>
