@@ -23,7 +23,7 @@ export class Screen{
     width:string;
     height:string;
     element:HTMLElement;
-    scoreElement:HTMLElement;
+
 
     constructor(element:HTMLElement,blockSize?:number){
         this.element = element;
@@ -53,14 +53,7 @@ export class Screen{
         this.border.right=parseFloat(this.width)/this.blockSize;
         this.border.down=parseFloat(this.height)/this.blockSize;
 
-        let Div=document.createElement('div');
-        Div.className="scoreBlock";
-        Div.style.left=(parseInt(String(this.border.left))+5)*parseInt(String(this.blockSize))+"px";
-        Div.style.top=(parseInt(String(this.border.top))-2)*parseInt(String(this.blockSize))+"px";
-        Div.style.width=5*this.blockSize+"px";
-        Div.style.height=this.blockSize+"px";
 
-        this.scoreElement=Div;
     }
     public cleanScreen():void{
 
@@ -72,7 +65,7 @@ export class Screen{
         newDiv.className="snake";
         parent.replaceChild(newDiv,this.element);
         this.element=newDiv;
-        this.element.appendChild(this.scoreElement);
+
 
     }
 

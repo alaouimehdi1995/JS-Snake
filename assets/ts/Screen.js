@@ -33,13 +33,6 @@ var Screen = (function () {
         this.border.top = 0;
         this.border.right = parseFloat(this.width) / this.blockSize;
         this.border.down = parseFloat(this.height) / this.blockSize;
-        var Div = document.createElement('div');
-        Div.className = "scoreBlock";
-        Div.style.left = (parseInt(String(this.border.left)) + 5) * parseInt(String(this.blockSize)) + "px";
-        Div.style.top = (parseInt(String(this.border.top)) - 2) * parseInt(String(this.blockSize)) + "px";
-        Div.style.width = 5 * this.blockSize + "px";
-        Div.style.height = this.blockSize + "px";
-        this.scoreElement = Div;
     };
     Screen.prototype.cleanScreen = function () {
         var parent = this.element.parentNode;
@@ -50,7 +43,6 @@ var Screen = (function () {
         newDiv.className = "snake";
         parent.replaceChild(newDiv, this.element);
         this.element = newDiv;
-        this.element.appendChild(this.scoreElement);
     };
     Screen.prototype.drawFood = function (food) {
         var x = parseInt(String(food.position.x)) * parseInt(String(this.blockSize)) + "px";

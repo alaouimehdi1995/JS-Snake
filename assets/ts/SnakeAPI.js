@@ -8,13 +8,13 @@ var Game_1 = require("./Game");
 var SnakeAPI = (function () {
     function SnakeAPI(gameElement, scoreElement) {
         this.dataExtractor = new APIExtractor_1.APIExtractor(gameElement);
-        this.scorer = new ScoreListener_1.ScoreListener(scoreElement);
+        this.scorer = new ScoreListener_1.ScoreListener(scoreElement, this.dataExtractor.blockSize);
         this.game = new Game_1.Game(gameElement, this.dataExtractor.getGameController(), this.dataExtractor.getBlockSize(), this.dataExtractor.getGameMode());
         this.game.addObserver(this);
     }
     SnakeAPI.prototype.play = function () {
         var _this = this;
-        this.gameID = setInterval(function () { console.log("sahra wla"); _this.game.start(); }, this.dataExtractor.getGameSpeed());
+        this.gameID = setInterval(function () { _this.game.start(); }, this.dataExtractor.getGameSpeed());
     };
     SnakeAPI.prototype.notifyGameOver = function () {
         clearInterval(this.gameID);

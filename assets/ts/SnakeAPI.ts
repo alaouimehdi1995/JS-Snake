@@ -17,7 +17,7 @@ export class SnakeAPI implements ObserverInterface{
 
     constructor(gameElement,scoreElement){
         this.dataExtractor=new APIExtractor(gameElement);
-        this.scorer=new ScoreListener(scoreElement);
+        this.scorer=new ScoreListener(scoreElement,this.dataExtractor.blockSize);
         this.game=new Game(gameElement,this.dataExtractor.getGameController(),this.dataExtractor.getBlockSize(),this.dataExtractor.getGameMode());
         this.game.addObserver(this);
 
@@ -25,7 +25,7 @@ export class SnakeAPI implements ObserverInterface{
 
     play(){
 
-        this.gameID = setInterval(()=>{console.log("sahra wla");this.game.start();}, this.dataExtractor.getGameSpeed());
+        this.gameID = setInterval(()=>{this.game.start();}, this.dataExtractor.getGameSpeed());
     }
 
     notifyGameOver():void{
