@@ -1,247 +1,177 @@
+import {GameControllerInterface} from "./GameControllers/GameControllerInterface";
+import {Food} from "./GameElements/Food";
+import {Snake} from "./GameElements/Snake";
 import {Screen} from './Screen';
-import {GameController} from "./GameController";
+import {SubjectInterface} from "./ObserverPattern/SubjectInterface";
+import {ObserverInterface} from "./ObserverPattern/ObserverInterface";
+import {Direction} from "./GameElements/Direction";
+import {Coordinates} from "./GameElements/Coordinates";
+/**
+ * Created by mehdi on 24/12/17.
+ */
 
 
-export enum Direction{
-    right,
-    left,
-    up,
-    down,
-    paused
-}
- export class Coordonates{
-    x:number;
-    y:number;
-    constructor(x:number,y:number){
-        this.x=x;
-        this.y=y;
-    }
-}
-
- export class Snake{
-    body:Coordonates[];
-    direction:Direction;
-    lastDirection:Direction;
-    game:Game;
-
-    constructor(game:Game,initialPosition){
-        this.body=[];
-        this.game=game;
-        this.direction=Direction.right;
-        for(let i=0;i<initialPosition.length;i++){
-            this.body.push(new Coordonates(initialPosition[i].x,initialPosition[i].y));
-        }
-
-    }
-    setPause(){
-        if(this.direction==Direction.paused){
-            this.direction=this.lastDirection;
-        }
-        else{
-            this.lastDirection=this.direction;
-            this.direction=Direction.paused;
-        }
+export class Game implements SubjectInterface{
 
 
-    }
-    isPaused(){
-        return this.direction==Direction.paused;
-    }
-    check(x:number,y:number):boolean{
-        for(let i=0;i<this.body.length;i++){
-            if(this.body[i].x==x && this.body[i].y==y)
-                return true;
-        }
-        return false;
-    }
-    draw(){
-        let x:string,y:string;
-        for(let i=0;i<this.body.length;i++){
-            x=parseInt(String(this.body[i].x))*parseInt(String(this.game.screen.blocSize))+"px";
-            y=parseInt(String(this.body[i].y))*parseInt(String(this.game.screen.blocSize))+"px";
-            var Div=document.createElement('div');
-            Div.className="snakeBloc";
-            Div.style.width= this.game.screen.blocSize+"px";
-            Div.style.height= this.game.screen.blocSize+"px";
-            Div.style.top=y;
-            Div.style.left=x;
-            Div.innerHTML=' ';
-            this.game.screen.element.appendChild(Div);
-        }
-    }
-    move(head){
-        this.body.pop();
-        this.body.unshift(head);
-    }
-    eatFood(food){
-        this.body.unshift(new Coordonates(food.position.x,food.position.y));
-    }
-    checkGameOver():boolean{
-        for(let i=1;i<this.body.length;i++){
-            if(this.body[i].x==this.body[0].x && this.body[i].y==this.body[0].y){
-                return true;
-            }
-        }
-        return false;
-    }
-}
+    observers: ObserverInterface[]=[];
+    private snake:Snake;
+    private food:Food;
+    private screen:Screen;
+    private controller:GameControllerInterface;
+    private withWallsMode:boolean;
+    private score:number;
+    private isGameOver:boolean;
 
- export class Food{
-    position:Coordonates;
-    game:Game;
-    constructor(game:Game){
-        this.game=game;
-        this.position=new Coordonates(null,null);
-    }
-
-    randomIntFromInterval (min:number,max:number) {
-        return (Math.random()*(max-min)+min);
-    }
-
-    getRandomBloc(){
-        do {
-            var px = parseInt(String(this.randomIntFromInterval(this.game.screen.border.left, this.game.screen.border.right)));
-            var py = parseInt(String(this.randomIntFromInterval(this.game.screen.border.top, this.game.screen.border.down)));
-        }while(this.game.snake.check(px,py));
-        this.position.x=px;
-        this.position.y=py;
-    }
-    draw(){
-        var x=parseInt(String(this.position.x))*parseInt(String(this.game.screen.blocSize))+"px";
-        var y=parseInt(String(this.position.y))*parseInt(String(this.game.screen.blocSize))+"px";
-        let Div=document.createElement('div');
-        Div.className="foodBloc";
-        Div.style.width= this.game.screen.blocSize+"px";
-        Div.style.height= this.game.screen.blocSize+"px";
-        Div.style.top=y;
-        Div.style.left=x;
-        Div.innerHTML=' ';
-        this.game.screen.element.appendChild(Div);
-    }
-}
-
-
- export class Game{
-    score:number;
-    gameOver:boolean;
-    screen:Screen;
-    snake:Snake;
-    food:Food;
-    controller:GameController;
-    withWalls:boolean;
-    constructor(element,gameController:GameController,blockSize:number,withWalls:boolean){
-        this.score=0;
-        this.gameOver=false;
-        this.screen=new Screen(element,blockSize);
-        this.snake=new Snake(this,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]);
-        this.controller = gameController;
-        this.withWalls=withWalls;
-        this.controller.setSnake(this.snake);
-        this.food=new Food(this);
+    constructor(element:HTMLElement,gameController:GameControllerInterface,blockSize:number,withWalls:boolean){
+        this.score = 0;
+        this.isGameOver = false;
+        this.setScreen(new Screen(element,blockSize));
+        this.setSnake( new Snake(this,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]) );
+        this.setController(gameController);
+        this.withWallsMode = withWalls;
+        this.setFood( new Food(this) );
         this.food.getRandomBloc();
     }
-    restartGame(){
-        this.score=0;
-        this.gameOver=false;
-        this.screen.cleanScreen();
-        this.snake=new Snake(this,[{x:2,y:2},{x:2,y:1},{x:1,y:1},{x:0,y:1},{x:0,y:0}]);
-        this.controller.setSnake(this.snake);
-        this.food=new Food(this);
-        this.food.getRandomBloc();
+
+
+
+
+    public getSnake():Snake{    return this.snake;  }
+    public getFood():Food{  return this.food;   }
+    public getScreen():Screen{  return this.screen; }
+    public setScreen(screen:Screen):void{
+        this.screen = screen;
     }
-    setScreen(screen:Screen){
-        this.screen=screen;
+    public setSnake(snake:Snake):void{
+        this.snake = snake;
     }
-    setSnake(snake:Snake){
-        this.snake=snake;
+    public setFood(food:Food):void{
+        this.food = food;
     }
-    setFood(food:Food){
-        this.food=food;
+    public setController(controller:GameControllerInterface):void{
+        this.controller = controller;
+        this.controller.setGame(this);
     }
-    updateScore(){
-        this.screen.scoreElement.innerHTML="Score: "+String(this.score);
-    }
-    start():boolean{
-        let head:Coordonates;
+    public gameOver():void{ this.isGameOver=true; }
+    public start():void{
+
+        let head:Coordinates;
+
         if (this.snake.direction == Direction.right) {
 
-            if(this.snake.body[0].x<this.screen.border.right-1)
-                head = new Coordonates( this.snake.body[0].x + 1,this.snake.body[0].y);
+            if(this.snake.body[0].x<this.screen.getBorder().right-1)
+                head = new Coordinates( this.snake.body[0].x + 1,this.snake.body[0].y);
             else {
-                if(this.withWalls)
-                    this.gameOver=true;
+                if(this.withWallsMode)
+                    this.gameOver();
 
-                head = new Coordonates(this.screen.border.left, this.snake.body[0].y);
+                head = new Coordinates(this.screen.getBorder().left, this.snake.body[0].y);
             }
         }
 
         else if (this.snake.direction == Direction.left) {
 
-            if(this.snake.body[0].x>this.screen.border.left)
-                head = new Coordonates(  this.snake.body[0].x - 1, this.snake.body[0].y);
+            if(this.snake.body[0].x>this.screen.getBorder().left)
+                head = new Coordinates(  this.snake.body[0].x - 1, this.snake.body[0].y);
             else {
-                if(this.withWalls)
-                    this.gameOver=true;
+                if(this.withWallsMode)
+                    this.gameOver();
 
-                head = new Coordonates(this.screen.border.right - 1, this.snake.body[0].y);
+                head = new Coordinates(this.screen.getBorder().right - 1, this.snake.body[0].y);
             }
         }
 
         else if (this.snake.direction == Direction.up) {
 
-            if(this.snake.body[0].y>this.screen.border.top)
-                head = new Coordonates(  this.snake.body[0].x, this.snake.body[0].y - 1);
+            if(this.snake.body[0].y>this.screen.getBorder().top)
+                head = new Coordinates(  this.snake.body[0].x, this.snake.body[0].y - 1);
             else {
-                if(this.withWalls)
-                    this.gameOver=true;
+                if(this.withWallsMode)
+                    this.gameOver();
 
-                head = new Coordonates(this.snake.body[0].x, this.screen.border.down - 1);
+                head = new Coordinates(this.snake.body[0].x, this.screen.getBorder().down - 1);
             }
         }
 
         else if (this.snake.direction == Direction.down) {
 
-            if(this.snake.body[0].y<this.screen.border.down-1)
-                head = new Coordonates(  this.snake.body[0].x,  this.snake.body[0].y + 1);
+            if(this.snake.body[0].y<this.screen.getBorder().down-1)
+                head = new Coordinates(  this.snake.body[0].x,  this.snake.body[0].y + 1);
             else {
-                if(this.withWalls)
-                    this.gameOver=true;
+                if(this.withWallsMode)
+                    this.gameOver();
 
-                head = new Coordonates(this.snake.body[0].x, this.screen.border.top);
+                head = new Coordinates(this.snake.body[0].x, this.screen.getBorder().top);
             }
 
         }
+
         if(!this.snake.isPaused()){
             this.snake.move(head);
             this.screen.cleanScreen();
-            this.snake.draw();
-            this.updateScore();
+            this.screen.drawSnake(this.snake);
+            this.notifyAllScore();
         }
 
 
-        if(this.gameOver || this.snake.checkGameOver()){
-            this.gameOver=true;
-            let str:string="Game Over\nWould you like replay a new game ?";
-            let startGame=confirm(str);
-            if (startGame){
-                this.restartGame();
-            }
+        if(this.isGameOver || this.snake.checkGameOver()){
+            this.gameOver();
+            this.notifyAllGameOver();
         }
         else {
 
             if (this.snake.body[0].x == this.food.position.x && this.snake.body[0].y == this.food.position.y) {
                 this.snake.eatFood(this.food);
                 this.score += this.snake.body.length;
-                this.updateScore();
+                this.notifyAllScore();
                 this.food.getRandomBloc();
 
             }
-            this.food.draw();
+            this.screen.drawFood(this.food);
         }
-        return this.gameOver;
+
+    }
+
+    public moveSnake(direction:Direction){
+        if(direction==Direction.left){ //gauche
+            if(this.snake.direction!=Direction.right)
+                this.snake.direction=Direction.left;
+        }
+        else if(direction==Direction.up){ //haut
+            if(this.snake.direction!=Direction.down)
+                this.snake.direction=Direction.up;
+        }
+        else if(direction==Direction.right){ //droite
+            if(this.snake.direction!=Direction.left)
+                this.snake.direction=Direction.right;
+        }
+        else if(direction==Direction.down){ //bas
+            if(this.snake.direction!=Direction.up)
+                this.snake.direction=Direction.down;
+        }
+        else if(direction==Direction.paused){//en pause
+            this.snake.setPaused();
+
+        }
+    }
+
+    public addObserver(observer: ObserverInterface): void {
+        this.observers.push(observer);
+    }
+
+    public removeObserver(observer: ObserverInterface): void {
+        this.observers.splice(this.observers.indexOf(observer));
     }
 
 
-
+    notifyAllGameOver():void{
+        for(let element of this.observers)
+            element.notifyGameOver();
+    }
+    notifyAllScore():void{
+        for(let element of this.observers)
+            element.notifyScore(this.score);
+    }
 
 }

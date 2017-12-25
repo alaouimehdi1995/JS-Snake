@@ -1,6 +1,8 @@
-import {GameController, TouchScreenController, KeyboardController} from "./GameController";
+import {TouchScreenController} from "./GameControllers/TouchScreenController";
+import {GameControllerInterface} from "./GameControllers/GameControllerInterface";
+import {KeyboardController} from "./GameControllers/KeyboardController";
 /**
- * Created by mehdi on 11/08/17.
+ * Created by mehdi on 24/12/17.
  */
 
 var defaultSettings={
@@ -11,13 +13,17 @@ var defaultSettings={
 
 };
 
-export class DataExtractor{
+export class APIExtractor{
+
     gameSpeed:number;
     blockSize:number;
     gameModeWithWalls:boolean;
-    gameController:GameController;
+    gameController:GameControllerInterface;
 
-    constructor(element){
+
+
+
+    constructor(element:HTMLElement){
         this.extractGameSpeed(element);
         this.extractBlockSize(element);
         this.extractGameController(element);
@@ -25,22 +31,18 @@ export class DataExtractor{
 
     }
 
-    private extractGameSpeed(element){
+
+    private extractGameSpeed(element:HTMLElement):void{
         let gameSpeed:number=parseFloat(element.getAttribute("game-speed"));
-        if(gameSpeed)
-            this.gameSpeed=gameSpeed;
-        else
-            this.gameSpeed=defaultSettings.gameSpeed;
-    }
-    private extractBlockSize(element){
-        let blockSize:number=parseFloat(element.getAttribute("block-size"));
-        if(blockSize)
-            this.blockSize=blockSize;
-        else
-            this.blockSize=defaultSettings.blockSize;
+        this.gameSpeed = gameSpeed ? gameSpeed : defaultSettings.gameSpeed;
 
     }
-    private extractGameController(element){
+    private extractBlockSize(element:HTMLElement):void{
+        let blockSize:number=parseFloat(element.getAttribute("block-size"));
+        this.blockSize = blockSize ? blockSize : defaultSettings.blockSize;
+
+    }
+    private extractGameController(element:HTMLElement):void{
         let gameController:string=element.getAttribute("game-controller");
 
         if(gameController){
@@ -58,17 +60,13 @@ export class DataExtractor{
             this.gameController=this.getRightController();
 
     }
-    private extractGameMode(element){
+    private extractGameMode(element:HTMLElement):void{
         let gameMode:string=element.getAttribute("game-mode");
-        if(gameMode && gameMode.toLowerCase()=="walls")
-            this.gameModeWithWalls=true;
-
-        else
-            this.gameModeWithWalls=false;
+        this.gameModeWithWalls = (gameMode && gameMode.toLowerCase()=="walls");
 
     }
 
-    private getRightController():GameController{
+    private getRightController():GameControllerInterface{
         if('ontouchstart' in window || navigator.maxTouchPoints)
             return new TouchScreenController;
         else
@@ -77,6 +75,6 @@ export class DataExtractor{
 
     public getGameSpeed():number{ return this.gameSpeed;}
     public getBlockSize():number{ return this.blockSize;}
-    public getGameController():GameController{ return this.gameController; }
+    public getGameController():GameControllerInterface{ return this.gameController; }
     public getGameMode():boolean{ return this.gameModeWithWalls; }
 }

@@ -8,6 +8,7 @@
         <link href="assets/css/snake.css" rel="stylesheet">
     <body>
         <div style="text-align: center;"><h2>Snake Game</h2><h3>By ALAOUI Mehdi</h3></div>
+        <div id="scoreBlock" class="scoreBlock"></div>
         <div id="snake"  class="snake" game-speed="auto" block-size="25" game-controller="auto" game-mode="nowalls"></div>
         <!--
          Game Attributes:
@@ -17,13 +18,8 @@
             - game-mode: walls or nowalls
         -->
 
-        <script type="text/javascript" src="assets/js/hammer.min.js"></script>
-        <script type="text/javascript" src="assets/ts/snake.js"></script>
-        <script>
+        <!--<script type="text/javascript" src="assets/js/hammer.min.js"></script>-->
+        <script type="text/javascript" src="snake.js"></script>
 
-            var element=document.getElementById('snake');
-            var snakeGame=SnakeAPI(element);
-            snakeGame.play();
-        </script>
     </body>
 </html>
